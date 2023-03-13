@@ -13,7 +13,7 @@ data = [
 
 dv = DictVectorizer(sparse=False)
 X = dv.fit_transform(data)
-Y = np.array(['Shooter', 'Shooter', 'Shooter', 'Farming Sim', 'Farming Sim', 'Farming Sim'])
+Y = np.array(['Shooter', 'Shooter', 'Shooter', 'Not Shooter', 'Not Shooter', 'Not Shooter'])
 
 mnb = MultinomialNB()
 mnb.fit(X, Y)
