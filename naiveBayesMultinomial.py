@@ -6,7 +6,7 @@ data = [
 {'co-op': 1,    'FPS': 1,   'hordes': 1, 'warfare': 0,  'farm': 0,  'life': 0,  'adventure': 0}, # Deep Rock Galactic
 {'co-op': 0,    'FPS': 1,   'hordes': 0, 'warfare': 1,  'farm': 0,  'life': 0,  'adventure': 0}, # Battlefield 2042
 {'co-op': 1,    'FPS': 1,   'hordes': 0, 'warfare': 0,  'farm': 0,  'life': 0,  'adventure': 0}, # Battlefield 2042
-{'co-op': 1,    'FPS': 1,   'hordes': 0, 'warfare': 0,  'farm': 1,  'life': 1,  'adventure': 0}, # Stardew Valley
+{'co-op': 1,    'FPS': 0,   'hordes': 0, 'warfare': 0,  'farm': 1,  'life': 1,  'adventure': 0}, # Stardew Valley
 {'co-op': 0,    'FPS': 0,   'hordes': 0, 'warfare': 0,  'farm': 1,  'life': 0,  'adventure': 0}, # Rune Factory 5
 {'co-op': 0,    'FPS': 0,   'hordes': 0, 'warfare': 0,  'farm': 1,  'life': 1,  'adventure': 1}, # Kynseed
 ] 
