@@ -4,8 +4,8 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
+# Dataset
 emails = pd.read_csv('emails.csv')
-
 emails.drop(columns="Email No.", inplace=True)
 
 X = emails.iloc[:, :-1].values
@@ -13,6 +13,7 @@ y = emails.iloc[:, -1].values
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
+# Training
 mnb = MultinomialNB()
 mnb.fit(X_train, y_train)
 MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
