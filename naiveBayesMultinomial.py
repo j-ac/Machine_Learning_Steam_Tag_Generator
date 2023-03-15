@@ -1,33 +1,37 @@
 import numpy as np
-from sklearn.feature_extraction import DictVectorizer
+import pandas as pd
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
-data = [
-{'co-op': 1,    'FPS': 1,   'hordes': 1, 'warfare': 0,  'farm': 0,  'life': 0,  'adventure': 0}, # Deep Rock Galactic
-{'co-op': 0,    'FPS': 1,   'hordes': 0, 'warfare': 1,  'farm': 0,  'life': 0,  'adventure': 0}, # Battlefield 2042
-{'co-op': 1,    'FPS': 1,   'hordes': 0, 'warfare': 0,  'farm': 0,  'life': 0,  'adventure': 0}, # Battlefield 2042
-{'co-op': 1,    'FPS': 0,   'hordes': 0, 'warfare': 0,  'farm': 1,  'life': 1,  'adventure': 0}, # Stardew Valley
-{'co-op': 0,    'FPS': 0,   'hordes': 0, 'warfare': 0,  'farm': 1,  'life': 0,  'adventure': 0}, # Rune Factory 5
-{'co-op': 0,    'FPS': 0,   'hordes': 0, 'warfare': 0,  'farm': 1,  'life': 1,  'adventure': 1}, # Kynseed
-] 
+emails = pd.read_csv('emails.csv')
 
-dv = DictVectorizer(sparse=False)
-X = dv.fit_transform(data)
-Y = np.array(['Shooter', 'Shooter', 'Shooter', 'Not Shooter', 'Not Shooter', 'Not Shooter'])
+emails.drop(columns="Email No.", inplace=True)
+
+X = emails.iloc[:, :-1].values
+y = emails.iloc[:, -1].values
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
 mnb = MultinomialNB()
-mnb.fit(X, Y)
+mnb.fit(X_train, y_train)
 MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
 
-test_data = data = [
-{'co-op': 0,    'FPS': 1,   'hordes': 0, 'warfare': 0,  'farm': 0,  'life': 0,  'adventure': 0},  
-{'co-op': 1,    'FPS': 0,   'hordes': 0, 'warfare': 0,  'farm': 1,  'life': 1,  'adventure': 0}, 
-{'co-op': 0,    'FPS': 1,   'hordes': 0, 'warfare': 1,  'farm': 0,  'life': 0,  'adventure': 0}, 
-{'co-op': 1,    'FPS': 1,   'hordes': 0, 'warfare': 0,  'farm': 0,  'life': 0,  'adventure': 0}, 
-{'co-op': 0,    'FPS': 1,   'hordes': 0, 'warfare': 0,  'farm': 0,  'life': 0,  'adventure': 0}, 
-{'co-op': 1,    'FPS': 0,   'hordes': 1, 'warfare': 0,  'farm': 0,  'life': 0,  'adventure': 0}, 
-{'co-op': 0,    'FPS': 0,   'hordes': 0, 'warfare': 1,  'farm': 0,  'life': 1,  'adventure': 1}, 
-{'co-op': 0,    'FPS': 1,   'hordes': 0, 'warfare': 0,  'farm': 1,  'life': 0,  'adventure': 0}, 
-]
+# Prediction
+y_prediction = mnb.predict(X_test)
 
-print(mnb.predict(dv.fit_transform(test_data)))
+# Evaluation
+mnb_accuracy = accuracy_score(y_test, y_prediction)
+mnb_precision = precision_score(y_test, y_prediction)
+mnb_recall = recall_score(y_test, y_prediction)
+mnb_f1 = f1_score(y_test, y_prediction)
+
+results = np.asarray([y_test, y_prediction])
+pd.DataFrame(results).to_csv("emailsMNBresults.csv", header=None, index=None)
+
+print("Results: ", {
+    "Accuracy": mnb_accuracy,
+    "Precision": mnb_precision,
+    "Recall": mnb_recall,
+    "F1 Score": mnb_f1
+})
