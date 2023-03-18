@@ -11,6 +11,10 @@ emails.drop(columns="Email No.", inplace=True)
 X = emails.iloc[:, :-1].values
 y = emails.iloc[:, -1].values
 
+# Preprocessing: Reducing counts more than 1, to 1
+X = np.where(X > 1, 1, X)
+pd.DataFrame(X).to_csv("emailsMNBPreProcessing.csv", header=None, index=None)
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
 # Training
