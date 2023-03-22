@@ -9,7 +9,9 @@ dataset = pd.read_csv("min_75_max5k_as_ids.csv")
 
 # Preprocessing
 dataset_X = dataset.iloc[:, 1:].values
+print(dataset_X.shape)
 dataset_y = dataset.iloc[:,:1].values
+print(dataset_y.shape)
 
 # Calculate max index for X (words) and y (labels)
 X_max_index = 0
@@ -37,14 +39,13 @@ print("y max index:", y_max_index)
 
 # Create Empty 2D arrays with dimensions of total samples vs max X and max Y
 
-all_X = np.zeros([len(dataset_X), X_max_index], dtype=int)
+all_X = np.zeros([dataset_X.shape[0], X_max_index], dtype=int)
 print(all_X.shape)
-all_y = np.zeros([len(dataset_y), y_max_index], dtype=int)
+all_y = np.zeros([dataset_y.shape[0], y_max_index], dtype=int)
 print(all_y.shape)
 
-# Somehow the above goes to 17838? for len(dataset_X) and len(dataset_Y)????
-
 # Replace 0's with 1's in corresponding indexes
+# TODO, Needs fixing!!! Fillins in a bunch of rows with 1's and then the rest are 0's
 
 for array in dataset_X:
         
