@@ -39,9 +39,9 @@ print("y max index:", y_max_index)
 
 # Create Empty 2D arrays with dimensions of total samples vs max X and max Y
 
-all_X = np.zeros([dataset_X.shape[0], X_max_index], dtype=int)
+all_X = np.zeros([dataset_X.shape[0], X_max_index + 1], dtype=int)
 print(all_X.shape)
-all_y = np.zeros([dataset_y.shape[0], y_max_index], dtype=int)
+all_y = np.zeros([dataset_y.shape[0], y_max_index + 1], dtype=int)
 print(all_y.shape)
 
 # Replace 0's with 1's in corresponding indexes
