@@ -45,23 +45,21 @@ all_y = np.zeros([dataset_y.shape[0], y_max_index], dtype=int)
 print(all_y.shape)
 
 # Replace 0's with 1's in corresponding indexes
-# TODO, Needs fixing!!! Fillins in a bunch of rows with 1's and then the rest are 0's
+# TODO, Fix: IndexError: index 3276 is out of bounds for axis 0 with size 3276
 
-for array in dataset_X:
-        
-    npArray = np.fromstring(array[0][1:-1], dtype=int, sep=',')
-
-    if(npArray.size != 0):
-        for value in np.nditer(npArray):
-            all_X[int(value)] = 1
-
-for array in dataset_y:
-    
-    npArray = np.fromstring(array[0][1:-1], dtype=int, sep=',')
+for i in range(0, dataset_X.shape[0]):
+    npArray = np.fromstring(dataset_X[i][0][1:-1], dtype=int, sep=',')
 
     if(npArray.size != 0):
         for value in np.nditer(npArray):
-            all_y[int(value)] = 1
+            all_X[i][int(value)] = 1
+
+for i in range(0, dataset_y.shape[0]):
+    npArray = np.fromstring(dataset_y[i][0][1:-1], dtype=int, sep=',')
+
+    if(npArray.size != 0):
+        for value in np.nditer(npArray):
+            all_y[i][int(value)] = 1
 
 # Output to csv to check
 
