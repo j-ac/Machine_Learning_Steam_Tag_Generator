@@ -81,27 +81,30 @@ for i in range(0, all_y.shape[1]):
     X_train, X_test, y_train, y_test = train_test_split(all_X, all_y_single_label, test_size=0.2, random_state=0)
 
     # Training
-    mnb = MultinomialNB()
-    mnb.fit(X_train, y_train)
-    MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
+    model = MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
+    model.fit(X_train, y_train)
 
     # Prediction
-    y_prediction = mnb.predict(X_test)
+    y_prediction = list(model.predict(X_test))
 
-    # Evaluation
-    mnb_accuracy = accuracy_score(y_test, y_prediction)
-    mnb_precision = precision_score(y_test, y_prediction)
-    mnb_recall = recall_score(y_test, y_prediction)
-    mnb_f1 = f1_score(y_test, y_prediction)
+    # Single Label Evaluation
+    model_accuracy = accuracy_score(y_test, y_prediction)
+    model_precision = precision_score(y_test, y_prediction)
+    model_recall = recall_score(y_test, y_prediction)
+    model_f1 = f1_score(y_test, y_prediction)
 
     all_tests.append(y_test)
     all_results.append(y_prediction)
 
     print("Results: ", {
-        "Accuracy": mnb_accuracy,
-        "Precision": mnb_precision,
-        "Recall": mnb_recall,
-        "F1 Score": mnb_f1
+        "Accuracy": model_accuracy,
+        "Precision": model_precision,
+        "Recall": model_recall,
+        "F1 Score": model_f1
     })
 
+# Overall Evaluation
 print("Hamming Loss: ", hamming_loss(all_tests, all_results))
+
+# Output Results to File
+pd.DataFrame([all_tests, all_results]).to_csv("results.csv", index=False)
