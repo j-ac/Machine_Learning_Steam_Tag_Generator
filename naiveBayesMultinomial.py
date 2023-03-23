@@ -2,10 +2,10 @@ import numpy as np
 import pandas as pd
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, hamming_loss
 
 # Dataset
-dataset = pd.read_csv("min_75_max5k_as_ids.csv")
+dataset = pd.read_csv("min75_max5k_as_ids.csv")
 
 # Preprocessing
 dataset_X = dataset.iloc[:, 1:].values
@@ -59,40 +59,49 @@ for i in range(0, dataset_y.shape[0]):
             all_y[i][int(value)] = 1
 
 # Checking Outputs
-for i in range(0, 10):
-    print(all_X[i])
+# for i in range(0, 10):
+#     print(all_X[i])
 
-for i in range(0, 10):
-    print(all_y[i])
+# for i in range(0, 10):
+#     print(all_y[i])
 
-# Isolating Single Label
-all_y_single_label = []
+# Multilabel Classification Loop
+all_tests= [] 
+all_results = []
 
-for i in range(0, all_y.shape[0]):
-    all_y_single_label.append(all_y[i][0])
+for i in range(0, all_y.shape[1]):
 
-# Splitting Dataset
-X_train, X_test, y_train, y_test = train_test_split(all_X, all_y_single_label, test_size=0.2, random_state=0)
+    # Isolating Single Label
+    all_y_single_label = []
 
-# Training
-mnb = MultinomialNB()
-mnb.fit(X_train, y_train)
-MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
+    for j in range(0, all_y.shape[0]):
+        all_y_single_label.append(all_y[j][i])
 
-# Prediction
-y_prediction = mnb.predict(X_test)
+    # Splitting Dataset
+    X_train, X_test, y_train, y_test = train_test_split(all_X, all_y_single_label, test_size=0.2, random_state=0)
 
-# Evaluation
-mnb_accuracy = accuracy_score(y_test, y_prediction)
-mnb_precision = precision_score(y_test, y_prediction)
-mnb_recall = recall_score(y_test, y_prediction)
-mnb_f1 = f1_score(y_test, y_prediction)
+    # Training
+    mnb = MultinomialNB()
+    mnb.fit(X_train, y_train)
+    MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
 
-results = np.asarray([y_test, y_prediction])
+    # Prediction
+    y_prediction = mnb.predict(X_test)
 
-print("Results: ", {
-    "Accuracy": mnb_accuracy,
-    "Precision": mnb_precision,
-    "Recall": mnb_recall,
-    "F1 Score": mnb_f1
-})
+    # Evaluation
+    mnb_accuracy = accuracy_score(y_test, y_prediction)
+    mnb_precision = precision_score(y_test, y_prediction)
+    mnb_recall = recall_score(y_test, y_prediction)
+    mnb_f1 = f1_score(y_test, y_prediction)
+
+    all_tests.append(y_test)
+    all_results.append(y_prediction)
+
+    print("Results: ", {
+        "Accuracy": mnb_accuracy,
+        "Precision": mnb_precision,
+        "Recall": mnb_recall,
+        "F1 Score": mnb_f1
+    })
+
+print("Hamming Loss: ", hamming_loss(all_tests, all_results))
