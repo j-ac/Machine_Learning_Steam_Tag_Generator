@@ -38,15 +38,12 @@ for array in dataset_y:
 print("y max index:", y_max_index)
 
 # Create Empty 2D arrays with dimensions of total samples vs max X and max Y
-
 all_X = np.zeros([dataset_X.shape[0], X_max_index + 1], dtype=int)
 print(all_X.shape)
 all_y = np.zeros([dataset_y.shape[0], y_max_index + 1], dtype=int)
 print(all_y.shape)
 
 # Replace 0's with 1's in corresponding indexes
-# TODO, Fix: IndexError: index 3276 is out of bounds for axis 0 with size 3276
-
 for i in range(0, dataset_X.shape[0]):
     npArray = np.fromstring(dataset_X[i][0][1:-1], dtype=int, sep=',')
 
@@ -61,44 +58,41 @@ for i in range(0, dataset_y.shape[0]):
         for value in np.nditer(npArray):
             all_y[i][int(value)] = 1
 
-# Output to csv to check
+# Checking Outputs
+for i in range(0, 10):
+    print(all_X[i])
 
-pd.DataFrame(all_X).to_csv("allX.csv", header=None, index=None)
-pd.DataFrame(all_y).to_csv("allY.csv", header=None, index=None)
+for i in range(0, 10):
+    print(all_y[i])
 
-# # Dataset
-# emails = pd.read_csv('emails.csv')
-# emails.drop(columns="Email No.", inplace=True)
+# Isolating Single Label
+all_y_single_label = []
 
-# X = emails.iloc[:, :-1].values
-# y = emails.iloc[:, -1].values
+for i in range(0, all_y.shape[0]):
+    all_y_single_label.append(all_y[i][0])
 
-# # Preprocessing: Reducing counts more than 1, to 1
-# normalized_X = np.where(X > 1, 1, X)
-# pd.DataFrame(normalized_X).to_csv("emailsMNBPreProcessing.csv", header=None, index=None)
+# Splitting Dataset
+X_train, X_test, y_train, y_test = train_test_split(all_X, all_y_single_label, test_size=0.2, random_state=0)
 
-# X_train, X_test, y_train, y_test = train_test_split(normalized_X, y, test_size=0.2, random_state=0)
+# Training
+mnb = MultinomialNB()
+mnb.fit(X_train, y_train)
+MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
 
-# # Training
-# mnb = MultinomialNB()
-# mnb.fit(X_train, y_train)
-# MultinomialNB(alpha=1.0, class_prior=None, fit_prior=True)
+# Prediction
+y_prediction = mnb.predict(X_test)
 
-# # Prediction
-# y_prediction = mnb.predict(X_test)
+# Evaluation
+mnb_accuracy = accuracy_score(y_test, y_prediction)
+mnb_precision = precision_score(y_test, y_prediction)
+mnb_recall = recall_score(y_test, y_prediction)
+mnb_f1 = f1_score(y_test, y_prediction)
 
-# # Evaluation
-# mnb_accuracy = accuracy_score(y_test, y_prediction)
-# mnb_precision = precision_score(y_test, y_prediction)
-# mnb_recall = recall_score(y_test, y_prediction)
-# mnb_f1 = f1_score(y_test, y_prediction)
+results = np.asarray([y_test, y_prediction])
 
-# results = np.asarray([y_test, y_prediction])
-# pd.DataFrame(results).to_csv("emailsMNBresults.csv", header=None, index=None)
-
-# print("Results: ", {
-#     "Accuracy": mnb_accuracy,
-#     "Precision": mnb_precision,
-#     "Recall": mnb_recall,
-#     "F1 Score": mnb_f1
-# })
+print("Results: ", {
+    "Accuracy": mnb_accuracy,
+    "Precision": mnb_precision,
+    "Recall": mnb_recall,
+    "F1 Score": mnb_f1
+})
