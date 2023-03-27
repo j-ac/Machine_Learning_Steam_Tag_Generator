@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import csv
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, hamming_loss
@@ -66,7 +67,7 @@ for i in range(0, dataset_y.shape[0]):
 #     print(all_y[i])
 
 # Multilabel Classification Loop
-all_tests= [] 
+all_tests= []
 all_results = []
 
 for i in range(0, all_y.shape[1]):
@@ -106,5 +107,34 @@ for i in range(0, all_y.shape[1]):
 # Overall Evaluation
 print("Hamming Loss: ", hamming_loss(all_tests, all_results))
 
+print(len(all_tests), len(all_tests[0]))
+print(len(all_results), len(all_results[0]))
+
+true_tags = [[0] * len(all_tests) for i in range(len(all_tests[0]))]
+predicted_tags = [[0] * len(all_results) for i in range(len(all_results[0]))]
+
+print(len(true_tags), len(true_tags[0]))
+print(len(predicted_tags), len(predicted_tags[0]))
+
+for i in range(len(all_tests)):
+    for j in range(len(all_tests[0])):
+        true_tags[j][i] = all_tests[i][j]
+        predicted_tags[j][i] = all_results[i][j]
+
 # Output Results to File
-pd.DataFrame([all_tests, all_results]).to_csv("results.csv", index=False)
+# with open('true_tags.csv', mode='w', newline='') as open_file:
+#     file_writer = csv.writer(open_file)
+
+#     for i in range(len(true_tags)):
+#         file_writer.writerow(true_tags[i])
+
+# with open('predicted_tags.csv', mode='w', newline='') as open_file:
+#     file_writer = csv.writer(open_file)
+
+#     for i in range(len(predicted_tags)):
+#             file_writer.writerow(predicted_tags[i])
+
+pd.DataFrame(true_tags).to_csv('true_tags.csv', index=False, header=False)
+pd.DataFrame(predicted_tags).to_csv('predicted_tags.csv', index=False, header=False)
+
+# pd.DataFrame([all_tests, all_results]).to_csv("results.csv", index=False)
