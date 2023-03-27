@@ -12,8 +12,11 @@ fields = []
 rows = []
 
 VERBOSE = True
-MINIMUM_DESC_LENGTH = 100 # Will not save anything less than this (in characters)
-MINIMUM_NUM_TAGS = 5 # Because lots of bad data has few tags
+MINIMUM_DESC_LENGTH = 100   # Discard any game in the initial pass with a description less than this this (in characters)
+MINIMUM_NUM_TAGS = 5        # Because lots of bad data has few tags. Similar manner to above
+IS_USING_ID_OUTPUT = True  # If True then print id numbers (0,1,2...n) otherwise print the words themselves
+MINIMUM_FREQUENCY = 100     # Don't include words that don't appear in at least this many games
+MAXIMUM_FREQUENCY = 5000    # Same as above but as a max
 
 class Splitter(object):
     """
@@ -48,7 +51,8 @@ def filter_dict_by_frequency(minimum, maximum, dct):
     filtered = {}
     for word_list in dct.items():
         fltr = list(filter(lambda word: word_frequencies[word] >= minimum and word_frequencies[word] <= maximum, word_list[1]))
-        filtered[word_list[0]] = fltr
+        fltr = list(filter(lambda word: word.isalpha(), fltr))
+        filtered[word_list[0]] = fltr # TODO word_list[0] just includes an index 0,1,2....n. Definitely wasteful instead of using enumerate()
                 
     return filtered
 
@@ -66,7 +70,7 @@ def convert_words_to_ids(dct):
 
     # replace
     ret = []
-    for idx, description in enumerate(dct.values()):
+    for description in dct.values():
         nums = []
         for word in description:
             nums.append(ids[word])
@@ -76,6 +80,17 @@ def convert_words_to_ids(dct):
 
     return ret
 
+# Used to accomplish the list of list format desired by the csv converter when not getting id numbers (as convert_words_to_ids normally does this)
+def convert_words_to_list_of_list(dct):
+    ret = []
+    for description in dct.values():
+        words = []
+        for wrd in description:
+            words.append(wrd)
+
+        ret.append(words)
+        
+    return ret
 # Given two columns, make csv files
 # Writes training.csv, dev.csv and test.csv. Divides the data among these according to the ratios specified in the float values.
 def make_csv_files(col1, col2, fields, training_set: float, dev_set: float):
@@ -142,13 +157,17 @@ def main():
             print("Initial pass: processed CSV line ", i)
 
     # FILTER THE DICTIONARIES
-    filtered_descs = filter_dict_by_frequency(minimum=10, maximum=10000, dct=game_descs)
-    filtered_tags = filter_dict_by_frequency(minimum=10, maximum=10000, dct=game_tags)
-    
-    words_ids = convert_words_to_ids(filtered_descs)
-    tags_ids = convert_words_to_ids(filtered_tags)
+    filtered_descs = filter_dict_by_frequency(MINIMUM_FREQUENCY, MAXIMUM_FREQUENCY, dct=game_descs)
+    filtered_tags = filter_dict_by_frequency(MINIMUM_FREQUENCY, MAXIMUM_FREQUENCY, dct=game_tags)
+
+    if (IS_USING_ID_OUTPUT):
+        words_ids = convert_words_to_ids(filtered_descs)
+        tags_ids = convert_words_to_ids(filtered_tags)
+    else:
+        words_ids = convert_words_to_list_of_list(filtered_descs)
+        tags_ids = convert_words_to_list_of_list(filtered_tags)
         
-    make_csv_files(tags_ids, words_ids, ["tags", "desc"], 0.5, 0.25)
+    make_csv_files(tags_ids, words_ids, ["tags", "desc"], 0.0, 0.0)
 
 class LemmatizationWithPOSTagger(object):
     def __init__(self):
