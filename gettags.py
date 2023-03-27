@@ -4,14 +4,6 @@ import sys
 import re
 import csv
 
-if (len(sys.argv) != 5):
-    print("Usage: gettags [input] [tag file] [id file] [output file]")
-    sys.exit()
-
-inpt = sys.argv[1] #That is, the output of the Naive-Bayes program
-tags = sys.argv[2]
-ids = sys.argv[3]
-output_file = sys.argv[4]
 
 def associate_id_to_tag(i_file, t_file):
     associations = {}
@@ -33,6 +25,16 @@ def associate_id_to_tag(i_file, t_file):
 
 
 def main():
+
+    if (len(sys.argv) != 5):
+        print("Usage: gettags [input] [tag file] [id file] [output file]")
+        sys.exit()
+
+    inpt = sys.argv[1] # That is, the output of the Naive-Bayes program
+    tags = sys.argv[2] # Csv containing the tags, as text. Generated from prepro.py
+    ids = sys.argv[3]  # Same as above but the one with numeric IDs
+    output_file = sys.argv[4] 
+
     associations = associate_id_to_tag(ids, tags)
 
     with open(inpt, 'r') as csvfile:
