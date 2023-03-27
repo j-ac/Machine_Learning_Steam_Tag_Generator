@@ -38,7 +38,7 @@ def main():
     associations = associate_id_to_tag(ids, tags)
 
     with open(inpt, 'r') as csvfile:
-        with open(output_file, 'a') as out:
+        with open(output_file, 'w') as out:
 
             csvreader = csv.reader(csvfile)
             next(csvreader)
