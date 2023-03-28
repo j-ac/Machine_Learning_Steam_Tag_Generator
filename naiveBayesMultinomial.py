@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, hamming_loss
 
 # Dataset
-dataset = pd.read_csv("min75_max5k_as_ids.csv")
+dataset = pd.read_csv("min75_max5k_as_idsNOEMPTIES.csv")
 
 # Preprocessing
 dataset_X = dataset.iloc[:, 1:].values
@@ -82,7 +82,7 @@ for i in range(0, all_y.shape[1]):
     X_train, X_test, y_train, y_test = train_test_split(all_X, all_y_single_label, test_size=0.2, random_state=0)
 
     # Training
-    model = MultinomialNB(alpha=0.05, class_prior=None, fit_prior=True)
+    model = MultinomialNB(alpha=0.01, class_prior=None, fit_prior=True)
     model.fit(X_train, y_train)
 
     # Prediction
