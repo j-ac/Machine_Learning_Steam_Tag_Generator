@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, hamming_loss
 
 # Dataset
-dataset = pd.read_csv("min75_max5k_as_idsNOEMPTIES.csv")
+dataset = pd.read_csv("min75_max5k_as_ids.csv")
 
 # Preprocessing
 dataset_X = dataset.iloc[:, 1:].values
