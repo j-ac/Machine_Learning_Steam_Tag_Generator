@@ -11,6 +11,7 @@ TRUE_TAGS_OUTPUT_FILE = "true_tags.csv"
 PREDICTED_TAGS_OUTPUT_FILE = "predicted_tags.csv"
 
 TRAINING_SPLIT = 0.2
+ALPHA = 0.01
 
 # Functions
 def calculateMaxXYIndex(dataset_X, dataset_y):
@@ -80,7 +81,7 @@ def runNaiveBayes(all_X, all_y):
         X_train, X_test, y_train, y_test = train_test_split(all_X, all_y_single_label, test_size=TRAINING_SPLIT, random_state=0)
 
         # Training
-        model = MultinomialNB(alpha=0.01, class_prior=None, fit_prior=True)
+        model = MultinomialNB(alpha=ALPHA, class_prior=None, fit_prior=True)
         model.fit(X_train, y_train)
 
         # Prediction
