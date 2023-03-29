@@ -15,6 +15,7 @@ ALPHA = 0.01
 
 # Functions
 def calculateMaxXYIndex(dataset_X, dataset_y):
+    
     X_max_index = 0
     y_max_index = 0
 
@@ -69,6 +70,10 @@ def runNaiveBayes(all_X, all_y):
     all_tests= []
     all_results = []
 
+    random_game_index = np.random.randint(0, len(all_X))
+    random_game_description = all_X[random_game_index]
+    random_game_results = []
+
     for i in range(0, all_y.shape[1]):
 
         # Isolating Single Label
@@ -86,6 +91,7 @@ def runNaiveBayes(all_X, all_y):
 
         # Prediction
         y_prediction = list(model.predict(X_test))
+        random_game_prediction = list(model.predict([random_game_description]))
 
         # Single Label Evaluation
         model_accuracy = accuracy_score(y_test, y_prediction)
@@ -95,13 +101,18 @@ def runNaiveBayes(all_X, all_y):
 
         all_tests.append(y_test)
         all_results.append(y_prediction)
+        random_game_results.append(random_game_prediction)
 
-        print("Results for Label" + str(i) + ": ", {
+        print("Results for Label " + str(i) + ": ", {
             "Accuracy": model_accuracy,
             "Precision": model_precision,
             "Recall": model_recall,
             "F1 Score": model_f1
         })
+
+    print("Random Game Index: ", random_game_index)
+    print("Random Game Results: ")
+    print(random_game_results)
 
     return all_tests, all_results
 
