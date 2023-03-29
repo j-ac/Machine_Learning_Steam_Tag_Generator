@@ -1,14 +1,15 @@
 import numpy as np
 import pandas as pd
-import csv
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, hamming_loss
 
 # Constants
 TRAINING_INPUT_FILE = "min75_max5k_as_ids.csv"
+
 TRUE_TAGS_OUTPUT_FILE = "true_tags.csv"
 PREDICTED_TAGS_OUTPUT_FILE = "predicted_tags.csv"
+RANDOM_GAME_OUTPUT_FILE = "random_game_prediction.csv"
 
 TRAINING_SPLIT = 0.2
 ALPHA = 0.01
@@ -114,33 +115,39 @@ def runNaiveBayes(all_X, all_y):
     print("Random Game Results: ")
     print(random_game_results)
 
-    return all_tests, all_results
+    return all_tests, all_results, random_game_results
 
 def evaluateResults(all_tests, all_results):
     print("Hamming Loss: ", hamming_loss(all_tests, all_results))
 
-def outputPredictedAndTrueTags(all_tests, all_results):
+def outputResults(all_tests, all_results, random_game_results):
 
     # Reordering Results for gettags.py
     true_tags = [[0] * len(all_tests) for i in range(len(all_tests[0]))]
     predicted_tags = [[0] * len(all_results) for i in range(len(all_results[0]))]
+    random_game_tags = [[0] * len(random_game_results) for i in range(len(random_game_results[0]))]
 
     for i in range(len(all_tests)):
         for j in range(len(all_tests[0])):
             true_tags[j][i] = all_tests[i][j]
             predicted_tags[j][i] = all_results[i][j]
+    
+    for i in range(len(random_game_results)):
+        for j in range(len(random_game_results[0])):
+            random_game_tags[j][i] = random_game_results[i][j]
 
     # Output Results to File
     pd.DataFrame(true_tags).to_csv(TRUE_TAGS_OUTPUT_FILE, index=False, header=False)
     pd.DataFrame(predicted_tags).to_csv(PREDICTED_TAGS_OUTPUT_FILE, index=False, header=False)
+    pd.DataFrame(random_game_tags).to_csv(RANDOM_GAME_OUTPUT_FILE, index=False, header=False)
 
 # Main Program
 dataset = pd.read_csv(TRAINING_INPUT_FILE)
 
 all_X, all_y = preprocessDataset(dataset)
 
-all_tests, all_results = runNaiveBayes(all_X, all_y)
+all_tests, all_results, random_game_results = runNaiveBayes(all_X, all_y)
 
 evaluateResults(all_tests, all_results)
 
-outputPredictedAndTrueTags(all_tests, all_results)
+outputResults(all_tests, all_results, random_game_results)
