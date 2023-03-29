@@ -1,0 +1,1 @@
+['Multiplayer', 'Survival', 'Tactical', 'RPG', 'Sandbox', 'RTS', 'Fantasy', 'Destruction', 'Medieval']

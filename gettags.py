@@ -41,7 +41,6 @@ def main():
         with open(output_file, 'w') as out:
 
             csvreader = csv.reader(csvfile)
-            next(csvreader)
             for row in csvfile:
                 output_row = []
                 binary_array = re.sub('[^0-1,]+', '', row).split(',')
