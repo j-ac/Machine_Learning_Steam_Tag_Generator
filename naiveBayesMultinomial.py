@@ -71,9 +71,14 @@ def runNaiveBayes(all_X, all_y):
     all_tests= []
     all_results = []
 
-    random_game_index = np.random.randint(0, len(all_X))
+    random_game_index = 286
     random_game_description = all_X[random_game_index]
     random_game_results = []
+
+    total_accuracy = 0.0
+    total_precision = 0.0
+    total_recall = 0.0
+    total_f1 = 0.0
 
     for i in range(0, all_y.shape[1]):
 
@@ -110,6 +115,16 @@ def runNaiveBayes(all_X, all_y):
             "Recall": model_recall,
             "F1 Score": model_f1
         })
+
+        total_accuracy += model_accuracy
+        total_precision += model_precision
+        total_recall += model_recall
+        total_f1 += model_f1
+        
+    print("Average Accuracy: ", total_accuracy/all_y.shape[1])
+    print("Average Precision: ", total_precision/all_y.shape[1])
+    print("Average Recall: ", total_recall/all_y.shape[1])
+    print("Average F1 Score: ", total_f1/all_y.shape[1])
 
     print("Random Game Index: ", random_game_index)
     print("Random Game Results: ")

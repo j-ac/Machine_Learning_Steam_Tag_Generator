@@ -1,1 +1,1 @@
-['Multiplayer', 'Survival', 'Tactical', 'RPG', 'Sandbox', 'RTS', 'Fantasy', 'Destruction', 'Medieval']
+['Multiplayer', 'Classic', 'Remake', 'Tactical', 'RPG', 'RTS', 'Isometric', 'Fantasy', 'War', 'Historical', 'Masterpiece', 'Medieval']
