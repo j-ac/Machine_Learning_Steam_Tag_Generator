@@ -1,0 +1,1 @@
+['Multiplayer', 'Classic', 'Remake', 'Tactical', 'RPG', 'RTS', 'Isometric', 'Fantasy', 'War', 'Historical', 'Masterpiece', 'Medieval']
