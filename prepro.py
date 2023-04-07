@@ -18,6 +18,7 @@ IS_USING_ID_OUTPUT = True  # If True then print id numbers (0,1,2...n) otherwise
 MINIMUM_FREQUENCY = 100     # Don't include words that don't appear in at least this many games
 MAXIMUM_FREQUENCY = 5000    # Same as above but as a max
 
+# From: https://stackoverflow.com/questions/15586721/wordnet-lemmatization-and-pos-tagging-in-python/15590384#15590384
 class Splitter(object):
     """
     split the document into sentences and tokenize each sentence
@@ -91,6 +92,7 @@ def convert_words_to_list_of_list(dct):
         ret.append(words)
         
     return ret
+
 # Given two columns, make csv files
 # Writes training.csv, dev.csv and test.csv. Divides the data among these according to the ratios specified in the float values.
 def make_csv_files(col1, col2, fields, training_set: float, dev_set: float):
@@ -116,7 +118,6 @@ def make_csv_files(col1, col2, fields, training_set: float, dev_set: float):
                         devwriter.writerow(tup)
                     else:
                         testwriter.writerow(tup)
-
 
 def main():
     # LOAD THE CSV
@@ -169,6 +170,7 @@ def main():
         
     make_csv_files(tags_ids, words_ids, ["tags", "desc"], 0.0, 0.0)
 
+# From: https://stackoverflow.com/questions/15586721/wordnet-lemmatization-and-pos-tagging-in-python/15590384#15590384
 class LemmatizationWithPOSTagger(object):
     def __init__(self):
         pass
