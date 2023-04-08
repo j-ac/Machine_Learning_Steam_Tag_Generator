@@ -21,7 +21,16 @@ required libraries for all files:
 - csv
 - nltk
 
-Notes: 
+IMPORTANT NOTES: 
+- 'Loss_Over_Time.png' and 'Accuracy_Over_Time.png' both show plots for the respective metrics 
+measured for RNN training run.
+
+- 'log.txt' shows logged metrics for RNN training run.
+
 - For convenience, latest proper output for both RNN and CNN notebooks is saved.
+
+- Output for RNN notebook's last cell is large (logs for 200 epochs), you'll only see final results
+at the very bottom, or if you check the respective png files.
+
 - CNN is currently not fully functional, the code itself is included to show progress made
 on that front.
