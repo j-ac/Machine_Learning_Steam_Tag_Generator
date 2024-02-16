@@ -1,4 +1,13 @@
+# Machine Learning Videogame Tags Generator
+### Abstract
+Tackles a multi-label classification problem, generating descriptive game tags from a Steam storepage description. Uses RNN and Naive Bayes strategies to benchmark against one another.
+Inspired by similar smaller scale problem such as sentiment analysis and movie genre classification, our team attempted a much larger problem using over 3000 input parameters and 100 possible outputs.
 
+![image](https://github.com/j-ac/easy_game_tags_with_RNN/assets/83185117/5fb8986a-12d3-4854-9542-490c1faadbf8)
+
+
+
+# Nitty Gritty
 For Naive Bayes Model:
 Dataset -> prepro.py -> naiveBayesMultinomial.py -> gettags.py
 
